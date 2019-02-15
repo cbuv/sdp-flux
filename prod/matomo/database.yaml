@@ -1,0 +1,42 @@
+---
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: matomo-mysql
+  namespace: prod
+  annotations:
+    flux.weave.works/automated: "true"
+spec:
+  releaseName: matomo-mysql
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    name: mysql
+    version: 0.15.0
+  values:
+    existingSecret: matomo-mysql-secret
+    mysqlDatabase: matomo
+    mysqlUser: matomo
+    persistence:
+      enabled: true
+    metrics: 
+      enabled: true
+# Define a servicemonitor for the mysql database so that Prometheus can scrape metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: matomo-mysql
+  namespace: prod
+  labels:
+    release: prometheus-operator
+spec:
+  endpoints:
+  - interval: 5s
+    port: metrics
+  jobLabel: matomo-mysql
+  namespaceSelector:
+    matchNames:
+    - prod
+  selector:
+    matchLabels:
+      name: matomo-mysql

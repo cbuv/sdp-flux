@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: "3.5.1"
+description: Matomo is a free and open source web analytics application that tracks online visits to one or more websites and displays reports on these visits for analysis.
+icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Matomo_Logo.svg/512px-Matomo_Logo.svg.png
+home: https://matomo.org
+name: matomo
+version: 0.0.1
+sources:
+- https://docs.docker.com/samples/library/matomo/
+- https://github.com/matomo-org/docker
